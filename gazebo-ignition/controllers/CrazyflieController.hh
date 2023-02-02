@@ -20,10 +20,15 @@
 #include <ignition/gazebo/System.hh>
 #include <memory>
 #include <string>
+#include <iostream>
+#include <mutex>
 #include <ignition/msgs.hh>
 #include <ignition/gazebo/components/Component.hh>
 #include <ignition/gazebo/config.hh>
 #include "ignition/gazebo/Model.hh"
+
+#include "ignition/transport.hh"
+#include "ignition/msgs.hh"
 
 namespace crazyflie_controller
 {
@@ -46,6 +51,12 @@ namespace crazyflie_controller
 
     private: ignition::msgs::Actuators motorCommands;
     private: ignition::gazebo::Model model{ignition::gazebo::kNullEntity};
+    
+    public: ignition::transport::Node node;
+    public: std::string topic = "foo";
+    public: std::optional<msgs::Actuators> commands;
+    public: void cb(const ignition::msgs::Float &_msg);
+    public: std::mutex recvdFloatMsgMutex;
 
   };
 }

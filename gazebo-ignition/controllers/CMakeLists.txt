@@ -7,8 +7,12 @@ project(CrazyflieController)
 find_package(ignition-plugin1 REQUIRED COMPONENTS register)
 set(IGN_PLUGIN_VER ${ignition-plugin1_VERSION_MAJOR})
 
+find_package(gz-transport12 QUIET REQUIRED OPTIONAL_COMPONENTS log)
+set(GZ_TRANSPORT_VER ${gz-transport12_VERSION_MAJOR})
+
 find_package(ignition-gazebo6 REQUIRED)
 add_library(CrazyflieController SHARED CrazyflieController.cc)
 target_link_libraries(CrazyflieController
   PRIVATE ignition-plugin${IGN_PLUGIN_VER}::ignition-plugin${IGN_PLUGIN_VER}
+  PRIVATE gz-transport${GZ_TRANSPORT_VER}::gz-transport${GZ_TRANSPORT_VER}
   PRIVATE ignition-gazebo6::ignition-gazebo6  )

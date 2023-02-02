@@ -51,29 +51,41 @@ void CrazyflieController::Configure(const ignition::gazebo::Entity &_entity,
       this->motorCommands.mutable_velocity()->Resize(
       4, 0);
 
-  _ecm.CreateComponent(this->model.Entity(),
+    _ecm.CreateComponent(this->model.Entity(),
                       ignition::gazebo::components::Actuators(this->motorCommands));
-
+    this->node.Subscribe(topic, &CrazyflieController::cb, this);
+    // if (!this->node.Subscribe(topic, &CrazyflieController::cb))
+    // {
+    //     std::cerr << "Error subscribing to topic [" << topic << "]" << std::endl;
+    // }
+    
 }
 
 void CrazyflieController::PreUpdate(const ignition::gazebo::UpdateInfo &_info,
     ignition::gazebo::EntityComponentManager &_ecm)
 {
 
-  this->motorCommands.set_velocity(0, 3000);
-  this->motorCommands.set_velocity(1, 3000);
-  this->motorCommands.set_velocity(2, 3000);
-  this->motorCommands.set_velocity(3, 3000);
+    this->motorCommands.set_velocity(0, commands);
+    this->motorCommands.set_velocity(1, commands);
+    this->motorCommands.set_velocity(2, commands);
+    this->motorCommands.set_velocity(3, commands);
 
-  auto motorCommandsComponent =
-      _ecm.Component<ignition::gazebo::components::Actuators>(this->model.Entity());
+    auto motorCommandsComponent =
+        _ecm.Component<ignition::gazebo::components::Actuators>(this->model.Entity());
 
-  motorCommandsComponent->SetData(this->motorCommands, 
-                    [](const ignition::msgs::Actuators &, const ignition::msgs::Actuators &){return false;});
+    motorCommandsComponent->SetData(this->motorCommands, 
+                        [](const ignition::msgs::Actuators &, const ignition::msgs::Actuators &){return false;});
 
-  _ecm.SetChanged(this->model.Entity(), ignition::gazebo::components::Actuators::typeId, ignition::gazebo::ComponentState::PeriodicChange);
+    _ecm.SetChanged(this->model.Entity(), ignition::gazebo::components::Actuators::typeId, ignition::gazebo::ComponentState::PeriodicChange);
 
-  ignmsg << "set motors" << std::endl;
+   // ignmsg << "set motors" << std::endl;
 }
+
+void CrazyflieController::cb(const ignition::msgs::Float &_msg){
+    std::lock_guard<std::mutex> lock(this->recvdFloatMsgMutex);
+    commands = _msg.data();
+    ignmsg << "fdfsadsadsa" << std::endl;
+}
+
 
 
