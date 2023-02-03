@@ -80,7 +80,7 @@ Copyright (c) 2022 Bitcraze
       <pose>0 0 0 0 0 0</pose>
       <plugin filename="CrazyflieController"
             name="crazyflie_controller::CrazyflieController">
-      </plugin>
+      </plugin  >
     </include>
   </world>
 </sdf>
