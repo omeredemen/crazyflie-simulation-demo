@@ -54,7 +54,6 @@ namespace crazyflie_controller
     
     public: ignition::transport::Node node;
     public: std::string topic = "foo";
-    //public: std::optional<ignition::msgs::Actuators> commands;
     public: float commands = 500;
     public: void cb(const ignition::msgs::Float &_msg);
     public: std::mutex recvdFloatMsgMutex;

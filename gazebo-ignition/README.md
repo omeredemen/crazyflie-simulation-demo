@@ -4,6 +4,7 @@ export IGN_GAZEBO_SYSTEM_PLUGIN_PATH=<absolute path to>/crazyflie-simulation-dem
 export IGN_GAZEBO_RESOURCE_PATH=<absolute path to>/crazyflie-simulation-demo/gazebo-ignition/worlds
 
 to run model 
+cd <absolute path to>/crazyflie-simulation-demo/gazebo-ignition/
 ign gazebo -r -v 4 crazyflie_world.sdf 
 
 open another terminal 
