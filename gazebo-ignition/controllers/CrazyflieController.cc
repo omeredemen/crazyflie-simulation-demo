@@ -53,12 +53,7 @@ void CrazyflieController::Configure(const ignition::gazebo::Entity &_entity,
 
     _ecm.CreateComponent(this->model.Entity(),
                       ignition::gazebo::components::Actuators(this->motorCommands));
-    this->node.Subscribe(topic, &CrazyflieController::cb, this);
-    // if (!this->node.Subscribe(topic, &CrazyflieController::cb))
-    // {
-    //     std::cerr << "Error subscribing to topic [" << topic << "]" << std::endl;
-    // }
-    
+    this->node.Subscribe(topic, &CrazyflieController::cb, this);    
 }
 
 void CrazyflieController::PreUpdate(const ignition::gazebo::UpdateInfo &_info,
@@ -78,13 +73,13 @@ void CrazyflieController::PreUpdate(const ignition::gazebo::UpdateInfo &_info,
 
     _ecm.SetChanged(this->model.Entity(), ignition::gazebo::components::Actuators::typeId, ignition::gazebo::ComponentState::PeriodicChange);
 
-   // ignmsg << "set motors" << std::endl;
+   ignmsg << "set motors" << std::endl;
 }
 
 void CrazyflieController::cb(const ignition::msgs::Float &_msg){
     std::lock_guard<std::mutex> lock(this->recvdFloatMsgMutex);
     commands = _msg.data();
-    ignmsg << "fdfsadsadsa" << std::endl;
+    ignmsg << "commands of motors:" << commands << std::endl;
 }
 
 
